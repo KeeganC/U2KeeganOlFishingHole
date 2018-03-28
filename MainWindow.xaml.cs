@@ -1,6 +1,6 @@
-﻿/* Keegan Chan
+/* Keegan Chan
  * 3 27 2018
- * U2KeeganOlFisingHole
+ * U2KeeganOlFishingHole
  * Calculates all possible combination of fish when given point totals
  * */
 using System;
@@ -32,26 +32,48 @@ namespace U2KeeganOlFishingHole
 
         private void btnGo_Click(object sender, RoutedEventArgs e)
         {
+            //ints could have been created in the tryparses but it's more clear to have them listed here
             int TroutValue, PikeValue, PickerelValue, TotalValue;
             String strTrout, strPike, strPickerel, strTotal;
-            string stringInput = txbInput.Text;
+            string strInput = txbInput.Text;
             Char charRange = '\r';
 
-            int startNewLine = stringInput.IndexOf(charRange);
-            int start2nd = stringInput.IndexOf(charRange) + 2;
+            /* NIU
+            MessageBox.Show((strInput.Length - txbInput.Text.LastIndexOf("\r") -2).ToString()); */
+
+            int startNewLine = strInput.IndexOf(charRange);
+            int start2nd = strInput.IndexOf(charRange) + 2;
             strTrout = txbInput.Text.Substring(0, txbInput.Text.IndexOf("\r"));
             int.TryParse(strTrout, out TroutValue);
-            strPike = txbInput.Text.Substring(txbInput.Text.IndexOf("\r") + 2, 1);
+            strPike = txbInput.Text.Substring(txbInput.Text.IndexOf("\r") + 2, txbInput.Text.IndexOf("\r", txbInput.Text.IndexOf("\r") + 1) - txbInput.Text.IndexOf("\r") );
             int.TryParse(strPike, out PikeValue);
-            strPickerel = txbInput.Text.Substring(txbInput.Text.IndexOf("\r") + 5, 1);
+            /* NIU
+            MessageBox.Show((strTrout.Length + 1 + strPike.Length + 1).ToString());
+            MessageBox.Show((txbInput.Text.LastIndexOf("\r")).ToString());
+            */
+            strPickerel = txbInput.Text.Substring(strTrout.Length + 1 + strPike.Length + 1, txbInput.Text.LastIndexOf("\r") - (strTrout.Length + 1 + strPike.Length + 1));
             int.TryParse(strPickerel, out PickerelValue);
-            strTotal = txbInput.Text.Substring(txbInput.Text.LastIndexOf("\r") + 2, 1);
+            strTotal = txbInput.Text.Substring(txbInput.Text.LastIndexOf("\r") + 2, strInput.Length - (txbInput.Text.LastIndexOf("\r") + 2));
             int.TryParse(strTotal, out TotalValue);
+            ///* NIU
             MessageBox.Show(strTrout);
             MessageBox.Show(strPike);
             MessageBox.Show(strPickerel);
-            MessageBox.Show(strTotal);
+            MessageBox.Show(strTotal);//*/
 
+            int tempTotal = 0;
+            int counter = 0;
+            int possibleCombinations = 0;
+
+            while(tempTotal != TotalValue)
+            {
+                counter++;
+
+                tempTotal = TroutValue * counter;
+
+                txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:0 Pickerel:0";
+                possibleCombinations++;
+            }
         }
     }
 }
