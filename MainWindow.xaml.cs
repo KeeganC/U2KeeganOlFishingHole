@@ -1,4 +1,4 @@
-/* Keegan Chan
+﻿/* Keegan Chan
  * 3 27 2018
  * U2KeeganOlFishingHole
  * Calculates all possible combination of fish when given point totals
@@ -45,35 +45,137 @@ namespace U2KeeganOlFishingHole
             int start2nd = strInput.IndexOf(charRange) + 2;
             strTrout = txbInput.Text.Substring(0, txbInput.Text.IndexOf("\r"));
             int.TryParse(strTrout, out TroutValue);
-            strPike = txbInput.Text.Substring(txbInput.Text.IndexOf("\r") + 2, txbInput.Text.IndexOf("\r", txbInput.Text.IndexOf("\r") + 1) - txbInput.Text.IndexOf("\r") );
+            strPike = txbInput.Text.Substring(txbInput.Text.IndexOf("\r") + 2, txbInput.Text.IndexOf("\r", txbInput.Text.IndexOf("\r") + 1) - txbInput.Text.IndexOf("\r"));
             int.TryParse(strPike, out PikeValue);
             /* NIU
             MessageBox.Show((strTrout.Length + 1 + strPike.Length + 1).ToString());
+            MessageBox.Show(txbInput.Text);
             MessageBox.Show((txbInput.Text.LastIndexOf("\r")).ToString());
-            */
+            MessageBox.Show("Trout: " + strTrout); */
+            
             strPickerel = txbInput.Text.Substring(strTrout.Length + 1 + strPike.Length + 1, txbInput.Text.LastIndexOf("\r") - (strTrout.Length + 1 + strPike.Length + 1));
             int.TryParse(strPickerel, out PickerelValue);
             strTotal = txbInput.Text.Substring(txbInput.Text.LastIndexOf("\r") + 2, strInput.Length - (txbInput.Text.LastIndexOf("\r") + 2));
             int.TryParse(strTotal, out TotalValue);
-            ///* NIU
+            /* NIU
             MessageBox.Show(strTrout);
             MessageBox.Show(strPike);
             MessageBox.Show(strPickerel);
-            MessageBox.Show(strTotal);//*/
+            MessageBox.Show(strTotal);*/
 
             int tempTotal = 0;
             int counter = 0;
             int possibleCombinations = 0;
 
-            while(tempTotal != TotalValue)
+            //Find how much from only trout
+            while (tempTotal < TotalValue)
             {
                 counter++;
 
                 tempTotal = TroutValue * counter;
 
-                txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:0 Pickerel:0";
-                possibleCombinations++;
+                if (tempTotal > TotalValue)
+                {
+                    Console.WriteLine("exempted line");
+                }
+                else
+                {
+                    txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:0 Pickerel:0";
+                    possibleCombinations++;
+                }
             }
+
+            //reset temp values
+            tempTotal = 0;
+            counter = 0;
+
+            //Find how much from only pike
+            while (tempTotal < TotalValue)
+            {
+                counter++;
+
+                tempTotal = PikeValue * counter;
+
+                if (tempTotal > TotalValue)
+                {
+                    Console.WriteLine("exempted line");
+                }
+                else
+                {
+                    txbOutput.Text = txbOutput.Text + "\r\nTrout:0 Pike:" + counter + " Pickerel:0";
+                    possibleCombinations++;
+                }
+            }
+
+            //reset temp values
+            tempTotal = 0;
+            counter = 0;
+
+            //Find how much from only pickerel
+            while (tempTotal < TotalValue)
+            {
+                counter++;
+
+                tempTotal = PickerelValue * counter;
+
+                if (tempTotal > TotalValue)
+                {
+                    Console.WriteLine("exempted line");
+                }
+                else
+                {
+                    txbOutput.Text = txbOutput.Text + "\r\nTrout:0 Pike:0 Pickerel:" + counter;
+                    possibleCombinations++;
+                }
+            }
+
+            //reset temp values
+            tempTotal = 0;
+            counter = 0;
+            int counter2 = 0;
+            int counter3 = 0;
+            int tempTroutTotal = 0;
+            int tempPikeTotal = 0;
+            int tempPickerelTotal = 0;
+
+            //combination trout then pike then pickerel
+            while (tempTotal < TotalValue)
+            {
+                counter++;
+
+                tempTroutTotal = TroutValue * counter;
+                tempTotal = tempTroutTotal;
+
+                //add pike
+                while (tempTotal < TotalValue)
+                {
+                    counter2++;
+
+                    tempPikeTotal = PikeValue * counter2;
+                    tempTotal = tempTroutTotal + tempPikeTotal;
+
+                    //add pickerel
+                    while (tempTotal < TotalValue)
+                    {
+                        counter3++;
+
+                        tempPickerelTotal = PickerelValue * counter3;
+                        tempTotal = tempTroutTotal + tempPikeTotal + tempPickerelTotal;
+
+                        if (tempTotal > TotalValue)
+                        {
+                            Console.WriteLine("exempted line");
+                        }
+                        else
+                        {
+                            txbOutput.Text = txbOutput.Text + "\r\nTrout:"+ counter +" Pike:"+ counter2 +" Pickerel:" + counter3;
+                            possibleCombinations++;
+                        }
+                    }
+                }
+            }
+
+            MessageBox.Show(possibleCombinations.ToString()+" possible combinations");
         }
     }
 }
