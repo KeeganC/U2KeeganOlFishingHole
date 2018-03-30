@@ -1,4 +1,4 @@
-﻿/* Keegan Chan
+/* Keegan Chan
  * 3 27 2018
  * U2KeeganOlFishingHole
  * Calculates all possible combination of fish when given point totals
@@ -137,10 +137,10 @@ namespace U2KeeganOlFishingHole
             int tempTroutTotal = 0;
             int tempPikeTotal = 0;
             int tempPickerelTotal = 0;
-
-            //experiment
             int tempTotal2 = 0;
             int tempTotal3 = 0;
+            string strOutputText;
+            string strNewLine;
 
             //combination trout then pike then pickerel
             while (tempTotal < TotalValue)
@@ -167,14 +167,24 @@ namespace U2KeeganOlFishingHole
                         tempTotal3 = tempTroutTotal + tempPikeTotal + tempPickerelTotal;
 
                         //output a combination
-                        if (tempTotal3 >= TotalValue)
+                        if (tempTotal3 > TotalValue)
                         {
                             Console.WriteLine("exempted line");
                         }
                         else
                         {
-                            txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
-                            possibleCombinations++;
+                            strOutputText = txbOutput.Text;
+                            strNewLine = "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
+                            //check that the line hasn't been entered before
+                            if (strOutputText.Contains(strNewLine))
+                            {
+                                Console.WriteLine("exempted line");
+                            }
+                            else
+                            {
+                                txbOutput.Text = txbOutput.Text + strNewLine;
+                                possibleCombinations++;
+                            }
                         }
                     }
 
@@ -185,8 +195,18 @@ namespace U2KeeganOlFishingHole
                     }
                     else
                     {
-                        txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
-                        possibleCombinations++;
+                        strOutputText = txbOutput.Text;
+                        strNewLine = "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
+                        //check that the line hasn't been entered before
+                        if (strOutputText.Contains(strNewLine))
+                        {
+                            Console.WriteLine("exempted line");
+                        }
+                        else
+                        {
+                            txbOutput.Text = txbOutput.Text + strNewLine;
+                            possibleCombinations++;
+                        }
                     }
 
                     //reset pickerel loop
@@ -210,7 +230,60 @@ namespace U2KeeganOlFishingHole
                 tempTotal2 = 0;
             }
 
+            //reset temp values
+            tempTotal = 0;
+            counter = 0;
+            counter2 = 0;
+            counter3 = 0;
+            tempTroutTotal = 0;
+            tempPikeTotal = 0;
+            tempPickerelTotal = 0;
+            tempTotal2 = 0;
+            tempTotal3 = 0;
+
             //Just Trout and Pike
+            while (tempTotal < TotalValue)
+            {
+                counter++;
+
+                tempTroutTotal = TroutValue * counter;
+                tempTotal = tempTroutTotal;
+                
+                    //add pickerel
+                    while (tempTotal3 < TotalValue)
+                    {
+                        counter3++;
+
+                        tempPickerelTotal = PickerelValue * counter3;
+                        tempTotal3 = tempTroutTotal + tempPickerelTotal;
+
+                        //output a combination
+                        if (tempTotal3 >= TotalValue)
+                        {
+                            Console.WriteLine("exempted line");
+                        }
+                        else
+                        {
+                            txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
+                            possibleCombinations++;
+                        }
+                    }
+                    
+                //output a combination
+                if (tempTroutTotal + tempPickerelTotal > TotalValue)
+                {
+                    Console.WriteLine("exempted line");
+                }
+                else
+                {
+                    txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
+                    possibleCombinations++;
+                }
+
+                //reset pickerel loop
+                counter3 = 0;
+                tempTotal3 = 0;
+            }
 
             MessageBox.Show(possibleCombinations.ToString() + " possible combinations");
         }
