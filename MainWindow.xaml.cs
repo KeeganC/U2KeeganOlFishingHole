@@ -241,7 +241,7 @@ namespace U2KeeganOlFishingHole
             tempTotal2 = 0;
             tempTotal3 = 0;
 
-            //Just Trout and Pike
+            //Just Trout and Pickerel
             while (tempTotal < TotalValue)
             {
                 counter++;
@@ -283,6 +283,61 @@ namespace U2KeeganOlFishingHole
                 //reset pickerel loop
                 counter3 = 0;
                 tempTotal3 = 0;
+            }
+            
+            //reset temp values
+            tempTotal = 0;
+            counter = 0;
+            counter2 = 0;
+            counter3 = 0;
+            tempTroutTotal = 0;
+            tempPikeTotal = 0;
+            tempPickerelTotal = 0;
+            tempTotal2 = 0;
+            tempTotal3 = 0;
+
+            //Just Trout and Pike
+            while (tempTotal < TotalValue)
+            {
+                counter++;
+
+                tempTroutTotal = TroutValue * counter;
+                tempTotal = tempTroutTotal;
+
+                //add pike
+                while (tempTotal2 < TotalValue)
+                {
+                    counter2++;
+
+                    tempPikeTotal = PikeValue * counter2;
+                    tempTotal2 = tempTroutTotal + tempPikeTotal;
+
+                    //output a combination
+                    if (tempTotal2 >= TotalValue)
+                    {
+                        Console.WriteLine("exempted line");
+                    }
+                    else
+                    {
+                        txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
+                        possibleCombinations++;
+                    }
+                }
+
+                //output a combination
+                if (tempTroutTotal + tempPikeTotal > TotalValue)
+                {
+                    Console.WriteLine("exempted line");
+                }
+                else
+                {
+                    txbOutput.Text = txbOutput.Text + "\r\nTrout:" + counter + " Pike:" + counter2 + " Pickerel:" + counter3;
+                    possibleCombinations++;
+                }
+
+                //reset pike loop
+                counter2 = 0;
+                tempTotal2 = 0;
             }
 
             MessageBox.Show(possibleCombinations.ToString() + " possible combinations");
